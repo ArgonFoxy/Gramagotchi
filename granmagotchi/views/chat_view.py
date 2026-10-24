@@ -26,6 +26,7 @@ class ChatView(ttk.Frame):
         self.user_entry = SendMessageWidget(self)
         self.user_input = tk.StringVar()
         self.user_entry.entry.configure(textvariable=self.user_input, font=font)
+        self.user_entry.entry.bind("<Return>", self.submit_input)
         self.user_entry.submit.configure(command=self.submit_input)
         self.user_entry.grid(row=1, column=0, sticky=tk.NSEW)
 
