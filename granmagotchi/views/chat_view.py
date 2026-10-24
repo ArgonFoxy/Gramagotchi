@@ -2,11 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 
 from roles import Roles
-from .scrollable_text_widget import ScrollableTextWidget
-from .send_message_widget import SendMessageWidget
+from widgets.scrollable_text_widget import ScrollableTextWidget
+from widgets.send_message_widget import SendMessageWidget
 from granmagotchi import font
 
-class ChatWidget(ttk.Frame):
+class ChatView(ttk.Frame):
     def __init__(self, parent, state):
         super().__init__(parent)
         self.columnconfigure(0, weight=1)
