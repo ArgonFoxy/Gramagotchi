@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter.font import Font
 from tkinter import ttk
 
 class ScrollableTextWidget(ttk.Frame):
@@ -10,9 +9,7 @@ class ScrollableTextWidget(ttk.Frame):
 
         self.rowconfigure(0, weight=1)
 
-        self.font = Font(family="8514oem", size=12)
-
-        self.text = tk.Text(self, font=self.font)
+        self.text = tk.Text(self)
         self.text.grid(row=0, column=0, sticky=tk.NSEW)
 
         self.scrollbar = ttk.Scrollbar(self, command=self.text.yview)
