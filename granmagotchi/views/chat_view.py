@@ -31,33 +31,32 @@ class ChatView(ttk.Frame):
 
         self.send_message(Roles.ADMIN, "WELCOME TO GRANMAGOTCHI!!!")
 
-    def submit_input(self):
+    def submit_input(self, *_):
         if self.user_input.get().strip() != "":
-            self.state.last_sent_user.set(self.user_input.get())
-            self.send_message(Roles.USER, self.state.last_sent_user.get())
+            self.state.last_sent_user.set(self.user_input.get().strip())
+            self.send_message(Roles.USER, self.state.last_sent_user.get().strip())
             self.user_input.set("")
-
 
     def send_message(self, role, message):
         self.chat.text.configure(state=tk.NORMAL)
         if role == Roles.ADMIN:
-            self.chat.text.insert(tk.INSERT, f"{message:_^50}\n\n", Roles.ADMIN)
+            self.chat.text.insert(tk.END, f"{message:_^50}\n\n", Roles.ADMIN)
 
         elif role == Roles.USER:
             try:
-                if self.chat.text.tag_names("insert-1c")[0] != Roles.USER:
-                    self.chat.text.insert(tk.INSERT, "User:\n", Roles.USER)
+                if self.chat.text.tag_names("end-2c")[0] != Roles.USER:
+                    self.chat.text.insert(tk.END, "User:\n", Roles.USER)
             except IndexError:
-                self.chat.text.insert(tk.INSERT, "User:\n", Roles.USER)
+                self.chat.text.insert(tk.END, "User:\n", Roles.USER)
 
-            self.chat.text.insert(tk.INSERT, f"{message}\n", Roles.USER)
+            self.chat.text.insert(tk.END, f"{message}\n", Roles.USER)
+
         elif role == Roles.GRANDMA:
             try:
-                if self.chat.text.tag_names("insert-1c")[0] != Roles.GRANDMA:
-                    self.chat.text.insert(tk.INSERT, "Grandma:\n", Roles.GRANDMA)
+                if self.chat.text.tag_names("end-2c")[0] != Roles.GRANDMA:
+                    self.chat.text.insert(tk.END, "Grandma:\n", Roles.GRANDMA)
             except IndexError:
-                    self.chat.text.insert(tk.INSERT, "Grandma:\n", Roles.GRANDMA)
+                    self.chat.text.insert(tk.END, "Grandma:\n", Roles.GRANDMA)
 
-            self.chat.text.insert(tk.INSERT, f"{message}\n", Roles.GRANDMA)
+            self.chat.text.insert(tk.END, f"{message}\n", Roles.GRANDMA)
         self.chat.text.configure(state=tk.DISABLED)
-
