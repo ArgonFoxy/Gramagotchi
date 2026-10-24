@@ -12,7 +12,7 @@ class SendMessageWidget(ttk.Frame):
         self.entry = ttk.Entry(self)
         self.entry.grid(row=0, column=0, sticky=tk.EW)
 
-        self.submit = ttk.Button(self, text=">", width=3)
+        self.submit = ttk.Button(self, text=" >", width=3)
         self.submit.grid(row=0, column=1)
 
     def assign_command(self, command):
