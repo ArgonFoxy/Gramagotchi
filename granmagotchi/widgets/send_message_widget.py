@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-from granmagotchi import font
-
 class SendMessageWidget(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -11,7 +9,7 @@ class SendMessageWidget(ttk.Frame):
 
         self.rowconfigure(0, weight=1)
 
-        self.entry = ttk.Entry(self, font=font)
+        self.entry = ttk.Entry(self)
         self.entry.grid(row=0, column=0, sticky=tk.EW)
 
         self.submit = ttk.Button(self, text=">", width=3)

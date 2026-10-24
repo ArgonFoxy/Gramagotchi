@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 
+from roles import Roles
 from .scrollable_text_widget import ScrollableTextWidget
 from .send_message_widget import SendMessageWidget
-
+from granmagotchi import font
 
 class ChatWidget(ttk.Frame):
     def __init__(self, parent, state):
@@ -16,39 +17,47 @@ class ChatWidget(ttk.Frame):
         self.state = state
 
         self.chat = ScrollableTextWidget(self)
-        self.chat.text.tag_configure("grandma",justify="left", foreground="green")
-        self.chat.text.tag_configure("user", justify="right", foreground="blue")
+        self.chat.text.tag_configure(Roles.ADMIN, justify="center", foreground="purple")
+        self.chat.text.tag_configure(Roles.GRANDMA,justify="left", foreground="green")
+        self.chat.text.tag_configure(Roles.USER, justify="right", foreground="blue")
+        self.chat.text.configure(font=font)
         self.chat.grid(row=0, column=0, sticky=tk.NSEW)
 
         self.user_entry = SendMessageWidget(self)
         self.user_input = tk.StringVar()
-        self.user_entry.entry.configure(textvariable=self.user_input)
+        self.user_entry.entry.configure(textvariable=self.user_input, font=font)
         self.user_entry.submit.configure(command=self.submit_input)
         self.user_entry.grid(row=1, column=0, sticky=tk.NSEW)
 
+        self.send_message(Roles.ADMIN, "WELCOME TO GRANMAGOTCHI!!!")
+
     def submit_input(self):
-        self.state.last_sent_user.set(self.user_input.get())
-        self.send_message(True, self.state.last_sent_user.get())
-        self.user_input.set("")
+        if self.user_input.get().strip() != "":
+            self.state.last_sent_user.set(self.user_input.get())
+            self.send_message(Roles.USER, self.state.last_sent_user.get())
+            self.user_input.set("")
 
 
-    def send_message(self, is_user, message):
+    def send_message(self, role, message):
         self.chat.text.configure(state=tk.NORMAL)
-        if is_user:
-            try:
-                if self.chat.text.tag_names("insert-1c")[0] != "user":
-                    self.chat.text.insert(tk.INSERT, "User:\n", "user")
-            except IndexError:
-                self.chat.text.insert(tk.INSERT, "User:\n", "user")
+        if role == Roles.ADMIN:
+            self.chat.text.insert(tk.INSERT, f"{message:_^50}\n\n", Roles.ADMIN)
 
-            self.chat.text.insert(tk.INSERT, f"{message}\n", "user")
-        else:
+        elif role == Roles.USER:
             try:
-                if self.chat.text.tag_names("insert-1c")[0] != "grandma":
-                    self.chat.text.insert(tk.INSERT, "Grandma:\n", "grandma")
+                if self.chat.text.tag_names("insert-1c")[0] != Roles.USER:
+                    self.chat.text.insert(tk.INSERT, "User:\n", Roles.USER)
             except IndexError:
-                    self.chat.text.insert(tk.INSERT, "Grandma:\n", "grandma")
+                self.chat.text.insert(tk.INSERT, "User:\n", Roles.USER)
 
-            self.chat.text.insert(tk.INSERT, f"{message}\n", "grandma")
+            self.chat.text.insert(tk.INSERT, f"{message}\n", Roles.USER)
+        elif role == Roles.GRANDMA:
+            try:
+                if self.chat.text.tag_names("insert-1c")[0] != Roles.GRANDMA:
+                    self.chat.text.insert(tk.INSERT, "Grandma:\n", Roles.GRANDMA)
+            except IndexError:
+                    self.chat.text.insert(tk.INSERT, "Grandma:\n", Roles.GRANDMA)
+
+            self.chat.text.insert(tk.INSERT, f"{message}\n", Roles.GRANDMA)
         self.chat.text.configure(state=tk.DISABLED)
 
