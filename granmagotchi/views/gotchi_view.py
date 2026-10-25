@@ -64,6 +64,10 @@ class GotchiView(ttk.Frame):
         self.music_off_icon = ImageTk.PhotoImage(Image.open("./assets/images/music_off.png").resize((25, 20)))
         self.button_group.button_bottom_right.configure(image=self.music_off_icon, command=self.toggle_music, compound="center")
 
+        self.state.grandma_health.trace_add("write", self.change_mood)
+        self.state.grandma_satiation.trace_add("write", self.change_mood)
+        self.state.grandma_hydration.trace_add("write", self.change_mood)
+        self.state.grandma_happiness.trace_add("write", self.change_mood)
 
     def meds(self):
         if not grandma_service.increase_stat(self.state.grandma_health, 30):
@@ -87,3 +91,9 @@ class GotchiView(ttk.Frame):
             mixer.music.unpause()
 
         self.state.music = not self.state.music
+
+    def change_mood(self, *argc):
+        self.grandma_widget.set_mood((self.state.grandma_happiness.get() +
+                                         self.state.grandma_health.get() +
+                                         self.state.grandma_hydration.get() +
+                                         self.state.grandma_satiation.get()) / 4)
