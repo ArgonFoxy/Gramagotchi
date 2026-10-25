@@ -2,6 +2,8 @@ import tkinter as tk
 from threading import Thread
 from tkinter import ttk
 
+from ollama import ResponseError
+
 from ..roles import Roles
 from ..widgets.scrollable_text_widget import ScrollableTextWidget
 from ..widgets.send_message_widget import SendMessageWidget
@@ -16,7 +18,9 @@ def send_ai_message(ch_view, state ):
         grandma_service.increase_stat(state.grandma_happiness, 30)
     except ConnectionError:
         ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
-                                          "Check that ollama is running\n"
+                                          "Check that ollama is running")
+    except ResponseError:
+        ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
                                           "Check that the models are installed.")
     finally:
         state.awaiting_response = False

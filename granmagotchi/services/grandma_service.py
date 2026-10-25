@@ -1,6 +1,7 @@
 import time
 
 import ollama
+from ollama import ResponseError
 
 from ..state import AppState
 
@@ -43,26 +44,31 @@ def get_ai_response(state):
 
 def generate_history(_, state: AppState):
     while len(state.backstories) <= 2:
-        response = ollama.chat(
-            model="smollm2:135m",
-            messages= [
-                {
-                    "role":"system",
-                    "content":
-                        f'''
-                            You are a grandma. Keep everything short (max 1 word)
-                            Your name is: {state.grandma_name}
-                            Your age is: {state.grandma_age}
-                            Your traits are: {state.grandma_traits}
-                            Your backstories are: {state.backstories}
-                            Give a summary of your backstory based on the information provided. Who did you marry, what did you study, how did you live your life?
-                        '''
-                }
-            ]
-        )
-
-        state.backstories.append(response.message.content)
-        time.sleep(10)
+        try:
+            response = ollama.chat(
+                model="smollm2:135m",
+                messages= [
+                    {
+                        "role":"system",
+                        "content":
+                            f'''
+                                You are a grandma. Keep everything short (max 1 word)
+                                Your name is: {state.grandma_name}
+                                Your age is: {state.grandma_age}
+                                Your traits are: {state.grandma_traits}
+                                Your backstories are: {state.backstories}
+                                Give a summary of your backstory based on the information provided. Who did you marry, what did you study, how did you live your life?
+                            '''
+                    }
+                ]
+            )
+            state.backstories.append(response.message.content)
+        except ConnectionError:
+            print("Couldn't connect to Ollama.")
+        except ResponseError:
+            print("Couldn't find smollm2:135m model.")
+        finally:
+            time.sleep(10)
 
 def build_system_message(state):
     return {
