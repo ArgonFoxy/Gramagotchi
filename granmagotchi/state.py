@@ -15,6 +15,8 @@ class AppState:
         self.grandma_cleanliness = tk.IntVar(value=100)
         self.visible_message_history = [{
                     "role": "system",
-                    "content": '''you are a grandma. Short messages. No actions.'''
+                    "content": '''You are a grandma. Short messages. No actions.'''
                 }]
         self.awaiting_response = False
+
+        self.grey_fog = False

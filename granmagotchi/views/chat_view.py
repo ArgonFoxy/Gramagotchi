@@ -10,7 +10,15 @@ from granmagotchi import font
 from services import grandma_service
 
 def send_ai_message(ch_view, state ):
-    ch_view.send_message(Roles.GRANDMA, grandma_service.get_ai_response(state))
+    try:
+        state.awaiting_response = True
+        ch_view.send_message(Roles.GRANDMA, grandma_service.get_ai_response(state))
+    except ConnectionError:
+        ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
+                                          "Check that ollama is running\n"
+                                          "Check that the models are installed.")
+    finally:
+        state.awaiting_response = False
 
 class ChatView(ttk.Frame):
     def __init__(self, parent, state):
@@ -44,8 +52,33 @@ class ChatView(ttk.Frame):
             self.send_message(Roles.USER, self.state.last_sent_user.get().strip())
             self.user_input.set("")
 
-            thread = Thread(target=send_ai_message, args=(self, self.state))
-            thread.start()
+            if self.state.grey_fog:
+                match self.state.last_sent_user.get().strip():
+                    case "1":
+                        self.send_message(Roles.ADMIN, "Set all stats to 0...")
+                        self.state.grandma_health.set(0)
+                        self.state.grandma_satiation.set(0)
+                        self.state.grandma_hydration.set(0)
+                        self.state.grandma_cleanliness.set(0)
+
+                    case "2":
+                        self.send_message(Roles.ADMIN, "\n".join([str(i) for i in self.state.visible_message_history]))
+
+                    case "0":
+                        self.send_message(Roles.ADMIN, "See you soon...")
+                        self.state.grey_fog = False
+            elif self.state.last_sent_user.get().lower() not in ["i pray to the fool"]:
+                thread = Thread(target=send_ai_message, args=(self, self.state))
+                thread.start()
+            else:
+                self.state.grey_fog = True
+
+                self.send_message(Roles.ADMIN, "Grey fog clouds your vision...")
+                self.send_message(Roles.ADMIN, "")
+                self.send_message(Roles.ADMIN, "1: Set All Stats To 0")
+                self.send_message(Roles.ADMIN, "2: Show message history")
+                self.send_message(Roles.ADMIN, "0: Leave")
+
 
 
     def send_message(self, role, message):

@@ -28,7 +28,6 @@ def get_ai_response(state):
         }
     )
 
-    state.awaiting_response = True
     response = ollama.chat(
         model="gemma4:e4b",
         messages=state.visible_message_history
@@ -36,6 +35,5 @@ def get_ai_response(state):
 
     state.visible_message_history.append(response.message)
 
-    state.awaiting_response = False
     return response.message.content
 
