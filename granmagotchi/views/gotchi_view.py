@@ -35,14 +35,14 @@ class GotchiView(ttk.Frame):
         self.health_stat = BarWidget(self.stat_container, "Health", state.grandma_health)
         self.health_stat.grid(row=0, column=0, sticky=tk.EW, padx=25)
 
-        self.health_stat = BarWidget(self.stat_container, "Satiation", state.grandma_satiation)
-        self.health_stat.grid(row=1, column=0, sticky=tk.EW, padx=25)
+        self.satiation_stat = BarWidget(self.stat_container, "Satiation", state.grandma_satiation)
+        self.satiation_stat.grid(row=1, column=0, sticky=tk.EW, padx=25)
 
-        self.health_stat = BarWidget(self.stat_container, "Hydration", state.grandma_hydration)
-        self.health_stat.grid(row=2, column=0, sticky=tk.EW, padx=25)
+        self.hydration_stat = BarWidget(self.stat_container, "Hydration", state.grandma_hydration)
+        self.hydration_stat.grid(row=2, column=0, sticky=tk.EW, padx=25)
 
-        self.health_stat = BarWidget(self.stat_container, "Cleanliness", state.grandma_cleanliness)
-        self.health_stat.grid(row=3, column=0, sticky=tk.EW, padx=25)
+        self.happiness_stat = BarWidget(self.stat_container, "Happiness", state.grandma_happiness)
+        self.happiness_stat.grid(row=3, column=0, sticky=tk.EW, padx=25)
 
 
         self.button_group = FourButtonWidget(self)
@@ -58,7 +58,7 @@ class GotchiView(ttk.Frame):
         self.button_group.button_bottom_left.configure(command=self.water, image=self.water_icon, compound="center")
 
         self.shower_icon = ImageTk.PhotoImage(Image.open("./assets/images/shower.png").resize((25, 20)))
-        self.button_group.button_bottom_right.configure(command=self.shower, image=self.shower_icon, compound="center")
+        self.button_group.button_bottom_right.configure(image=self.shower_icon, compound="center")
 
     def meds(self):
         if not grandma_service.increase_stat(self.state.grandma_health, 30):
@@ -71,7 +71,3 @@ class GotchiView(ttk.Frame):
     def water(self):
         if not grandma_service.increase_stat(self.state.grandma_hydration, 30):
             self.event_generate("<<AlreadyHydrated>>")
-
-    def shower(self):
-        if not grandma_service.increase_stat(self.state.grandma_cleanliness, 30):
-            self.event_generate("<<AlreadyClean>>")

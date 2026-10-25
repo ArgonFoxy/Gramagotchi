@@ -13,6 +13,7 @@ def send_ai_message(ch_view, state ):
     try:
         state.awaiting_response = True
         ch_view.send_message(Roles.GRANDMA, grandma_service.get_ai_response(state))
+        grandma_service.increase_stat(state.grandma_happiness, 30)
     except ConnectionError:
         ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
                                           "Check that ollama is running\n"
@@ -59,7 +60,7 @@ class ChatView(ttk.Frame):
                         self.state.grandma_health.set(0)
                         self.state.grandma_satiation.set(0)
                         self.state.grandma_hydration.set(0)
-                        self.state.grandma_cleanliness.set(0)
+                        self.state.grandma_happiness.set(0)
 
                     case "2":
                         self.send_message(Roles.ADMIN, "\n".join([str(i) for i in self.state.visible_message_history]))

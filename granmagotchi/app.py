@@ -35,14 +35,13 @@ class Granmagotchi(tk.Tk):
         self.style.configure("TButton", anchor="center")
 
         grandma_service.tick_stat(self, self.state.grandma_health, 10, 23000)
-        grandma_service.tick_stat(self, self.state.grandma_satiation, 10, 18000)
-        grandma_service.tick_stat(self, self.state.grandma_hydration, 10, 10000)
-        grandma_service.tick_stat(self, self.state.grandma_cleanliness, 10, 40000)
+        grandma_service.tick_stat(self, self.state.grandma_satiation, 10, 28000)
+        grandma_service.tick_stat(self, self.state.grandma_hydration, 10, 20000)
+        grandma_service.tick_stat(self, self.state.grandma_happiness, 10, 10000)
 
         self.bind("<<AlreadyHealthy>>", self.grandma_healthy)
         self.bind("<<AlreadySated>>", self.grandma_sated)
         self.bind("<<AlreadyHydrated>>", self.grandma_hydrated)
-        self.bind("<<AlreadyClean>>", self.grandma_clean)
 
         print(self.state.grandma_traits)
 
@@ -54,6 +53,3 @@ class Granmagotchi(tk.Tk):
 
     def grandma_hydrated(self, e):
         self.chat_view.send_message(Roles.GRANDMA, "Hey! I'm not thirsty sweetie!")
-
-    def grandma_clean(self, e):
-        self.chat_view.send_message(Roles.GRANDMA, "Hey! I'm clean sweetie!")
