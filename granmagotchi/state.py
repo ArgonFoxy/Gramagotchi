@@ -18,3 +18,4 @@ class AppState:
         self.backstories = []
 
         self.grey_fog = False
+        self.fallback = False

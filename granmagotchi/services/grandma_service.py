@@ -34,7 +34,7 @@ def get_ai_response(state):
     )
 
     response = ollama.chat(
-        model="gemma4:e4b",
+        model=("gemma4:e4b" if not state.fallback else "smollm2:135m"),
         messages= [build_system_message(state)] + state.visible_message_history
     )
 

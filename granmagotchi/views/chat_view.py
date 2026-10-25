@@ -20,8 +20,16 @@ def send_ai_message(ch_view, state ):
         ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
                                           "Check that ollama is running")
     except ResponseError:
-        ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
-                                          "Check that the models are installed.")
+        if not state.fallback:
+            ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
+                                              "Check that the models are installed."
+                                              "Switching to a simpler model (smollm2:135m)")
+            state.fallback = True
+        else:
+            ch_view.send_message(Roles.ADMIN, "Looks like the interactive grandma isn't available right now.\n"
+                                              "Check that the models are installed."
+                                              "Switching to a simpler model failed.")
+
     finally:
         state.awaiting_response = False
 
