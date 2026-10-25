@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 
 class SendMessageWidget(ttk.Frame):
     def __init__(self, parent):
@@ -12,7 +13,8 @@ class SendMessageWidget(ttk.Frame):
         self.entry = ttk.Entry(self)
         self.entry.grid(row=0, column=0, sticky=tk.EW)
 
-        self.submit = ttk.Button(self, text=" >", width=3)
+        self.send_image = ImageTk.PhotoImage(Image.open("./assets/images/send.png").resize((15,15)))
+        self.submit = ttk.Button(self, image=self.send_image, width=3)
         self.submit.grid(row=0, column=1)
 
     def assign_command(self, command):
