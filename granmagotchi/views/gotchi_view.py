@@ -1,12 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from pygame import mixer
 
 from widgets.bar_widget import BarWidget
 from widgets.grandma_widget import GrandmaWidget
 from widgets.four_button_widget import FourButtonWidget
 
 from services import grandma_service
+
 
 class GotchiView(ttk.Frame):
     def __init__(self, parent, state):
@@ -57,8 +59,11 @@ class GotchiView(ttk.Frame):
         self.water_icon = ImageTk.PhotoImage(Image.open("./assets/images/water.png").resize((25, 20)))
         self.button_group.button_bottom_left.configure(command=self.water, image=self.water_icon, compound="center")
 
-        self.shower_icon = ImageTk.PhotoImage(Image.open("./assets/images/shower.png").resize((25, 20)))
-        self.button_group.button_bottom_right.configure(image=self.shower_icon, compound="center")
+        self.state.music = False
+        self.music_icon = ImageTk.PhotoImage(Image.open("./assets/images/music.png").resize((25, 20)))
+        self.music_off_icon = ImageTk.PhotoImage(Image.open("./assets/images/music_off.png").resize((25, 20)))
+        self.button_group.button_bottom_right.configure(image=self.music_off_icon, command=self.toggle_music, compound="center")
+
 
     def meds(self):
         if not grandma_service.increase_stat(self.state.grandma_health, 30):
@@ -71,3 +76,14 @@ class GotchiView(ttk.Frame):
     def water(self):
         if not grandma_service.increase_stat(self.state.grandma_hydration, 30):
             self.event_generate("<<AlreadyHydrated>>")
+
+    def toggle_music(self):
+        if self.state.music:
+            self.button_group.button_bottom_right.configure(image=self.music_off_icon)
+            mixer.music.pause()
+
+        else:
+            self.button_group.button_bottom_right.configure(image=self.music_icon)
+            mixer.music.unpause()
+
+        self.state.music = not self.state.music

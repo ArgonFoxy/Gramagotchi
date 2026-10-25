@@ -2,6 +2,7 @@ import random
 import tkinter as tk
 from tkinter import ttk
 from threading import Thread
+from pygame import mixer
 
 from roles import Roles
 from state import AppState
@@ -9,6 +10,8 @@ from views.gotchi_view import GotchiView
 from views.chat_view import ChatView
 
 from services import grandma_service
+
+mixer.init()
 
 class Granmagotchi(tk.Tk):
     def __init__(self):
@@ -48,7 +51,10 @@ class Granmagotchi(tk.Tk):
         self.bind("<<AlreadySated>>", self.grandma_sated)
         self.bind("<<AlreadyHydrated>>", self.grandma_hydrated)
 
-        print(self.state.grandma_traits)
+        mixer.music.load("assets/music/bgm.mpeg")
+        mixer.music.play(-1)
+        mixer.music.set_volume(0.1)
+        mixer.music.pause()
 
     def grandma_healthy(self, e):
         self.chat_view.send_message(Roles.GRANDMA, random.choice(
