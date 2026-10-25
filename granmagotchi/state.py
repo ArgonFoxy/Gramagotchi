@@ -13,10 +13,8 @@ class AppState:
         self.grandma_satiation = tk.IntVar(value=100)
         self.grandma_hydration = tk.IntVar(value=100)
         self.grandma_happiness = tk.IntVar(value=100)
-        self.visible_message_history = [{
-                    "role": "system",
-                    "content": '''You are a grandma. Short messages. No actions.'''
-                }]
+        self.visible_message_history = []
         self.awaiting_response = False
+        self.backstories = []
 
         self.grey_fog = False

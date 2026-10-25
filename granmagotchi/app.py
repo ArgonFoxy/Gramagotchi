@@ -1,5 +1,7 @@
+import random
 import tkinter as tk
 from tkinter import ttk
+from threading import Thread
 
 from roles import Roles
 from state import AppState
@@ -34,10 +36,13 @@ class Granmagotchi(tk.Tk):
         self.style.configure('.', font=("8514oem", "12"))
         self.style.configure("TButton", anchor="center")
 
-        grandma_service.tick_stat(self, self.state.grandma_health, 10, 23000)
-        grandma_service.tick_stat(self, self.state.grandma_satiation, 10, 28000)
-        grandma_service.tick_stat(self, self.state.grandma_hydration, 10, 20000)
-        grandma_service.tick_stat(self, self.state.grandma_happiness, 10, 10000)
+        grandma_service.tick_stat(self, self.state.grandma_health, 10, 40000)
+        grandma_service.tick_stat(self, self.state.grandma_satiation, 10, 32000)
+        grandma_service.tick_stat(self, self.state.grandma_hydration, 10, 25000)
+        grandma_service.tick_stat(self, self.state.grandma_happiness, 10, 20000)
+
+        self.thread = Thread(target=grandma_service.generate_history, args=(0, self.state))
+        self.thread.start()
 
         self.bind("<<AlreadyHealthy>>", self.grandma_healthy)
         self.bind("<<AlreadySated>>", self.grandma_sated)
@@ -46,10 +51,34 @@ class Granmagotchi(tk.Tk):
         print(self.state.grandma_traits)
 
     def grandma_healthy(self, e):
-        self.chat_view.send_message(Roles.GRANDMA, "Hey! I'm very healthy sweetie!")
+        self.chat_view.send_message(Roles.GRANDMA, random.choice(
+            [
+                "Hey, I'm very healthy sweetie!",
+                "There is no need for that sweetie.",
+                "I am too healthy for that.",
+                "You shouldn't concern yourself.",
+                "Don't worry about me.",
+                "I'm in tip-top shape!"
+            ]))
 
     def grandma_sated(self, e):
-        self.chat_view.send_message(Roles.GRANDMA,"Hey! I'm stuffed sweetie!")
+        self.chat_view.send_message(Roles.GRANDMA, random.choice(
+            [
+                "Hey, I'm very full sweetie!",
+                "There is no need for that sweetie.",
+                "I am too full for that.",
+                "You shouldn't concern yourself.",
+                "Don't worry about me.",
+                "I'm in tip-top shape!"
+            ]))
 
     def grandma_hydrated(self, e):
-        self.chat_view.send_message(Roles.GRANDMA, "Hey! I'm not thirsty sweetie!")
+        self.chat_view.send_message(Roles.GRANDMA, random.choice(
+            [
+                "Hey, I'm very hydrated sweetie!",
+                "There is no need for that sweetie.",
+                "I drank too much water already.",
+                "You shouldn't concern yourself.",
+                "Don't worry about me.",
+                "I'm in tip-top shape!"
+            ]))
