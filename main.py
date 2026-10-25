@@ -1,6 +1,18 @@
+import os
+import signal
+
 from granmagotchi.app import Granmagotchi
+
+import subprocess
+from threading import Thread
 
 root = Granmagotchi()
 
-root.mainloop()
+def run_llama():
+    print(subprocess.run("ollama run gemma4:e4b"))
 
+thread = Thread(target = run_llama)
+thread.start()
+
+root.mainloop()
+os.kill(os.getpid(), signal.SIGINT)
