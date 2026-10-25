@@ -2,7 +2,7 @@ import time
 
 import ollama
 
-from state import AppState
+from ..state import AppState
 
 def increase_stat(stat, value):
     if stat.get() < 80:

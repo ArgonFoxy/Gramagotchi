@@ -3,11 +3,11 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from pygame import mixer
 
-from widgets.bar_widget import BarWidget
-from widgets.grandma_widget import GrandmaWidget
-from widgets.four_button_widget import FourButtonWidget
+from ..widgets.bar_widget import BarWidget
+from ..widgets.grandma_widget import GrandmaWidget
+from ..widgets.four_button_widget import FourButtonWidget
 
-from services import grandma_service
+from ..services import grandma_service
 
 
 class GotchiView(ttk.Frame):

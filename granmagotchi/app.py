@@ -4,12 +4,12 @@ from tkinter import ttk
 from threading import Thread
 from pygame import mixer
 
-from roles import Roles
-from state import AppState
-from views.gotchi_view import GotchiView
-from views.chat_view import ChatView
+from .roles import Roles
+from .state import AppState
+from .views.gotchi_view import GotchiView
+from .views.chat_view import ChatView
 
-from services import grandma_service
+from .services import grandma_service
 
 mixer.init()
 

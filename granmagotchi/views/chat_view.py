@@ -2,12 +2,12 @@ import tkinter as tk
 from threading import Thread
 from tkinter import ttk
 
-from roles import Roles
-from widgets.scrollable_text_widget import ScrollableTextWidget
-from widgets.send_message_widget import SendMessageWidget
+from ..roles import Roles
+from ..widgets.scrollable_text_widget import ScrollableTextWidget
+from ..widgets.send_message_widget import SendMessageWidget
 from granmagotchi import font
 
-from services import grandma_service
+from ..services import grandma_service
 
 def send_ai_message(ch_view, state ):
     try:
