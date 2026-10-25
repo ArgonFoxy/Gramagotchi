@@ -63,7 +63,20 @@ class ChatView(ttk.Frame):
                         self.state.grandma_happiness.set(0)
 
                     case "2":
+                        self.send_message(Roles.ADMIN, f"Grandma name: {self.state.grandma_name}\n"
+                                                       f"Grandma age: {self.state.grandma_age}\n"
+                                                       f"Grandma traits: {self.state.grandma_traits}\n"
+                                                       f"Grandma health: {self.state.grandma_health.get()}\n"
+                                                       f"Grandma satiation: {self.state.grandma_satiation.get()}\n"
+                                                       f"Grandma hydration: {self.state.grandma_hydration.get()}\n"
+                                                       f"Grandma happiness: {self.state.grandma_happiness.get()}")
+
+                    case "3":
                         self.send_message(Roles.ADMIN, "\n".join([str(i) for i in self.state.visible_message_history]))
+
+                    case "4":
+                        self.send_message(Roles.ADMIN, "\n".join([str(i) for i in self.state.backstories]))
+
 
                     case "0":
                         self.send_message(Roles.ADMIN, "See you soon...")
@@ -77,7 +90,9 @@ class ChatView(ttk.Frame):
                 self.send_message(Roles.ADMIN, "Grey fog clouds your vision...")
                 self.send_message(Roles.ADMIN, "")
                 self.send_message(Roles.ADMIN, "1: Set All Stats To 0")
-                self.send_message(Roles.ADMIN, "2: Show message history")
+                self.send_message(Roles.ADMIN, "2: Display minor stats")
+                self.send_message(Roles.ADMIN, "3: Show message history")
+                self.send_message(Roles.ADMIN, "4: Show grandma backstories")
                 self.send_message(Roles.ADMIN, "0: Leave")
 
 
